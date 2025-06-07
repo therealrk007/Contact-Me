@@ -17,7 +17,7 @@
     </head>
     <body>
 
-      <form action="https://contact-me-brown.vercel.app/api/send-mail.php"  method="post">
+      <form action=fetch()>
       
         <h1>Work With Me</h1>
         
@@ -80,3 +80,28 @@
 </html>
 </head>
 </html>
+<script>
+document.getElementById("contactForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const formData = {
+    email: this.email.value,
+    name: this.name.value,
+    subject: this.subject.value,
+    message: this.message.value
+  };
+
+  fetch("https://contact-me-brown.vercel.app/api/send-mail.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("status").innerText = data.message;
+      if (data.success) this.reset();
+    })
+    .catch(() => {
+      document.getElementById("status").innerText = "Something went wrong!";
+    });
+});
+</script>
